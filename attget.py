@@ -16,7 +16,6 @@ from zk import ZK, const # type: ignore
 
 def threaded_generate():
     start_time = time.time()  # Record the start time
-    # start_btn.config(relief='sunken')  # Save Log button goes sunken
     start_btn.focus_set()  # Save button gets focus
 
     log_text.config(state='normal')  # Enable the text box to modify its content
@@ -47,8 +46,6 @@ def threaded_generate():
             progress_bar['value'] = current_progress  # Update progress bar
             root.update_idletasks()  # Update the GUI
             root.after(100, update_progress)  # Call this function again after 100ms
-        # else:
-        #     progress_bar['value'] = 0  # Reset progress bar when done
 
     # Function to parse date and time strings into datetime objects
     def parse_datetime(dt_str):
@@ -86,9 +83,7 @@ def threaded_generate():
         try:
             log('STEP-2: Counting date-wise records ...')
             log('')
-            # log('Connecting to device ...')
             conn = zk.connect()
-            # log('Disabling device ...')
             conn.disable_device()
             attendances = conn.get_attendance()
             cnt = tmp = 0 # Counter
@@ -106,13 +101,11 @@ def threaded_generate():
                 tmp += cnt
                 cnt = 0
             
-            # log('Enabling device ...')
             conn.enable_device()
             log('')
             log(f'Total Record(s): {tmp}')
             log('')
             rec = tmp
-            # log(f'rec: {rec}')
             time.sleep(2)  # 2 seconds delay
 
         except Exception as e:
@@ -137,14 +130,10 @@ def threaded_generate():
         delta = edate - sdate   # returns timedelta
         
         try:
-            # log('')
             log('STEP-3: Fetching/Pulling records from machine ...')
             log('')
-            # log('Connecting to device ...')
             conn = zk.connect()
-            # log('Disabling device ...')
             conn.disable_device()
-            # log('')
 
             pgcon = psycopg2.connect(
                 database = 'fgtest',
@@ -172,7 +161,6 @@ def threaded_generate():
                 log('')
 
                 if attendances:
-                    # cursor = pgcon.cursor() # moved before loop
                     cnt = 0 # Counter
 
                     for att in attendances:
@@ -240,9 +228,6 @@ def threaded_generate():
                 cursor.close()
                 pgcon.close()
 
-            # log('')
-            # log(f'Enabling device ...')
-            # log('')
 
             conn.enable_device()
             time.sleep(2)  # 2 seconds delay
@@ -322,12 +307,9 @@ def threaded_generate():
                 
                 cnt = tmp = 0 # Counter
 
-                # for x in rows:
-                #     tmp += 1
 
                 result = []  # List to store the results after processing
                 tmp = len(rows)
-                # log(f'tmp: {tmp}')
 
                 progress_bar['length'] == tmp
                 progress_bar['maximum'] == tmp
@@ -377,7 +359,6 @@ def threaded_generate():
                 current_shift = None
                 max_shift_duration = timedelta(hours=24)  # Setting the maximum shift duration to 24 hours
 
-                # log('')
                 time.sleep(1)  # 1 seconds delay
                 log('STEP-4: Getting raw data from table for processing furthur ...')
                 log('')
@@ -403,8 +384,6 @@ def threaded_generate():
                     root.after(10)  # Simulate delay
 
                     if emp_id != current_emp_id:
-                        # if current_emp_id:
-                        #     transformed_data.append([current_emp_id, format_datetime(check_in_time), '', current_shift])
                         
                         transformed_data.append([current_emp_id, format_datetime(check_in_time), '', current_shift])
 
@@ -460,8 +439,6 @@ def threaded_generate():
 
                 # Displaying the transformed data
                 for row in transformed_data:
-                    # if not (row[1] and row[2]):
-                    #     transformed_data.remove(row)
                     
                     tmp += 1
 
@@ -473,7 +450,6 @@ def threaded_generate():
                     if row[0]:
                         if row[1] or row[2]:
                             log(f'{row[0].ljust(10)}{row[1].ljust(25)}{row[2].ljust(25)}{row[3].ljust(15)}')
-                            # cnt += 1    # Counter Increment
 
                         cnt += 1    # Counter Increment
                         progress_bar['value'] += (100 / tmp)
@@ -507,7 +483,6 @@ def threaded_generate():
 
     # Function to insert records into c_tmp table from final.csv file
     def insert_into_c_tmp(csv_file):
-        # log('')
         time.sleep(1)  # 1 seconds delay
         log('STEP-6: Uploading final record(s) ...')
         log('')
@@ -572,7 +547,6 @@ def threaded_generate():
                 # Iterate over the CSV data and insert each row into the database
                 for row in csv_reader:
                     emp_id, check_in, check_out = row[:3]
-                    # log(f'{row[0]}, {row[1]}, {row[2]}')
                     log(f'{row[0].ljust(10)}{row[1].ljust(25)}{row[2].ljust(25)}')
                     
                     if check_in == '':
@@ -669,7 +643,6 @@ def threaded_generate():
 
     end_time = time.time()  # Record the end time
     elapsed_time = end_time - start_time  # Calculate the elapsed time
-    # formatted_time = str(timedelta(seconds=elapsed_time))  # Format the elapsed time
     formatted_time = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))  # Format the elapsed time    
     log(f'Time consumed during execution: {formatted_time}')
     log('')
@@ -686,7 +659,6 @@ def log(message):
     root.update_idletasks()  # Update the GUI in real-time
 
 def save_log_to_file():
-    # save_btn.config(relief='sunken')  # Save Log button goes sunken
     save_btn.focus_set()  # Close button gets focus
     log_content = log_text.get('1.0', tk.END)  # Get all content from Text widget
 
@@ -706,7 +678,6 @@ def save_log_to_file():
     except FileNotFoundError:
         log('"final.csv" not found, unable to delete ...')
 
-    # save_btn.config(relief='raised')  # Save Log button goes back to raised
     log('Logs saved to "attlog.txt" ...')
 
 def disable_close_button():
