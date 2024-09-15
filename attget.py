@@ -379,9 +379,9 @@ def threaded_generate():
 
                 # log('')
                 time.sleep(1)  # 1 seconds delay
-                log(f'STEP-4: Getting raw data from table for processing furthur ...')
+                log('STEP-4: Getting raw data from table for processing furthur ...')
                 log('')
-                log(f'Identifying CheckIn/CheckOut based on shift timing:')
+                log('Identifying CheckIn/CheckOut based on shift timing:')
                 log('')
 
                 headerx = f'{"EmpID".ljust(10)}{"CheckTime".ljust(25)}{"CheckType".ljust(15)}{"ShiftType".ljust(15)}'
@@ -446,9 +446,9 @@ def threaded_generate():
                 log(f'Record(s): {cnt}')
                 log('')
                 time.sleep(1)  # 1 seconds delay
-                log(f'STEP-5: Raw data transformation is being processed ...')
+                log('STEP-5: Raw data transformation is being processed ...')
                 log('')
-                log(f'Placing CheckIn/CheckOut based on shift timing:')
+                log('Placing CheckIn/CheckOut based on shift timing:')
                 log('')
                 time.sleep(3)  # 3 seconds delay
                 headery = f'{"EmpID".ljust(10)}{"CheckIn".ljust(25)}{"CheckOut".ljust(25)}{"ShiftType".ljust(15)}'
