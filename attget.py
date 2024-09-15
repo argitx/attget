@@ -624,14 +624,14 @@ def threaded_generate():
         port2 = 4370
         ping_test1, ping_test2 = False, False
 
-        if (ping_host(host1, port1)) == True:
+        if (ping_host(host1, port1)) is True:
             ping_test1 = True
             log('PASSED: ERP Server Ping-Test ...')
         else:
             ping_test1 = False
             log('FAILED: ERP Server Ping-Test ...')
 
-        if (ping_host(host2, port2)) == True:
+        if (ping_host(host2, port2)) is True:
             ping_test2 = True
             log('PASSED: Attendance Machine Pint-Test ...')
         else:
